@@ -19,11 +19,11 @@
 
     <FrameLayout
         android:id="@+id/remote_video_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/max_space"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="@dimen/max_space"/>
     <ImageView
         android:id="@+id/btn_switch_camera"
@@ -40,5 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/btn_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="本地远程切换"/>
 
 </RelativeLayout>

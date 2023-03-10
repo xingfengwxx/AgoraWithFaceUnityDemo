@@ -2,6 +2,8 @@ package com.wangxingxing.agorawithfaceunitydemo
 
 import android.app.Application
 import android.util.Log
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.Utils
 import com.faceunity.nama.FURenderer
 import io.agora.rtc2.Constants
 import io.agora.rtc2.RtcEngine
@@ -19,6 +21,9 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        initLog()
+        Utils.init(this)
 
         initRtcEngine()
         initVideoCaptureAsync()
@@ -60,6 +65,12 @@ class App : Application() {
         mRtcEventHandler.removeEventHandler(handler)
     }
 
+    private fun initLog() {
+        LogUtils.getConfig()
+            .setLogSwitch(BuildConfig.DEBUG)
+            .setGlobalTag("wxx")
+            .setBorderSwitch(true)
+    }
 
     companion object {
         const val AGORA_APP_ID = "a0c47ef0486940acabbdf813b417cbdf"

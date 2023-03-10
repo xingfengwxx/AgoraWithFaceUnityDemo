@@ -10,6 +10,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.blankj.utilcode.util.LogUtils
 import com.faceunity.core.enumeration.FUAIProcessorEnum
 import com.faceunity.nama.FURenderer
 import com.faceunity.nama.data.FaceUnityDataFactory
@@ -46,6 +48,12 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
     private var mSensorManager: SensorManager? = null
     private val mFURenderer = FURenderer.getInstance()
 
+    //默认本地大窗预览
+    private var mLocalViewSmall = false
+
+    private var textureViewLocal: TextureView? = null
+    private var surfaceViewRemote: SurfaceView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -62,7 +70,7 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
     }
 
     private fun initUI() {
-        initRemoteViewLayout()
+//        initRemoteViewLayout()
 
         binding.btnSwitchCamera.setOnClickListener {
             preprocessor!!.skipFrame()
@@ -76,25 +84,29 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
                 binding.fuView.visibility = View.VISIBLE
             }
         }
+
+        binding.btnChange.setOnClickListener {
+            changeLocalRemoteView()
+        }
     }
 
     private fun initRoom() {
         preprocessor = PreprocessorFaceUnity.getInstance()
         mFaceUnityDataFactory = FaceUnityDataFactory(0)
         binding.fuView.bindDataFactory(mFaceUnityDataFactory)
-        val localView: FrameLayout = findViewById(R.id.local_video_view)
+//        val localView: FrameLayout = findViewById(R.id.local_video_view)
         // Create render view by RtcEngine
-        val textureView = TextureView(this)
+        textureViewLocal = TextureView(this)
         // Add to the local container
-        localView.addView(
-            textureView,
+        binding.localVideoView.addView(
+            textureViewLocal,
             FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         )
         // Setup local video to render your local camera preview
-        rtcEngine().setupLocalVideo(VideoCanvas(textureView, VideoCanvas.RENDER_MODE_HIDDEN, 0))
+        rtcEngine().setupLocalVideo(VideoCanvas(textureViewLocal, VideoCanvas.RENDER_MODE_HIDDEN, 0))
         joinChannel()
     }
 
@@ -111,6 +123,7 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
         rtcEngine().enableLocalAudio(false)
         rtcEngine().startPreview()
 
+        //TOKEN需要在有效期内才能看到对方画面
         rtcEngine().joinChannel(TOKEN, CHANNEL_NAME, null, 0)
     }
 
@@ -134,13 +147,13 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
     }
 
     private fun setRemoteVideoView(uid: Int) {
-        val surfaceView = RtcEngine.CreateRendererView(this)
+        surfaceViewRemote = RtcEngine.CreateRendererView(this)
         rtcEngine().setupRemoteVideo(
             VideoCanvas(
-                surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid
+                surfaceViewRemote, VideoCanvas.RENDER_MODE_HIDDEN, uid
             )
         )
-        binding.remoteVideoView.addView(surfaceView)
+        binding.remoteVideoView.addView(surfaceViewRemote)
     }
 
     /**
@@ -245,12 +258,38 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
         return true
     }
 
+    private fun changeLocalRemoteView() {
+        mLocalViewSmall = !mLocalViewSmall
+        LogUtils.i("mLocalViewSmall=$mLocalViewSmall")
+        if (mLocalViewSmall) {
+            //本地是小窗预览时
+            binding.localVideoView.removeView(textureViewLocal)
+            binding.remoteVideoView.removeView(surfaceViewRemote)
+
+            binding.localVideoView.removeAllViews()
+            binding.localVideoView.addView(surfaceViewRemote)
+
+            binding.remoteVideoView.removeAllViews()
+            binding.remoteVideoView.addView(textureViewLocal)
+        } else {
+            binding.localVideoView.removeView(surfaceViewRemote)
+            binding.remoteVideoView.removeView(textureViewLocal)
+
+            binding.localVideoView.removeAllViews()
+            binding.localVideoView.addView(textureViewLocal)
+
+            binding.remoteVideoView.removeAllViews()
+            binding.remoteVideoView.addView(surfaceViewRemote)
+
+        }
+    }
+
     companion object {
         const val TAG = "wxx"
 
         const val CHANNEL_NAME = "test"
         const val TOKEN =
-            "007eJxTYND0Co39cfzEvZ2bmANsvuS91fnZX+H0J9grY65Mc/beqcEKDIkGySbmqWkGJhZmliYGicmJSUkpaRaGxkkmhubJQKZM/I/khkBGhjTRMhZGBggE8VkYSlKLSxgYAKvCIHs="
+            "007eJxTYIjp5f8Ws+ZuobxpZNgivzW1z0wK81/NP/G/K1Wh2Hpbl7gCQ6JBsol5apqBiYWZpYlBYnJiUlJKmoWhcZKJoXkykDn1LldKQyAjQ5KpHisjAwSC+CwMJanFJQwMAGISH4o="
     }
 
 
