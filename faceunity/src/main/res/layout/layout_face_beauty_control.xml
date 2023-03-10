@@ -103,32 +103,34 @@
     <com.faceunity.nama.checkbox.CheckGroup
         android:id="@+id/beauty_radio_group"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x98"
+        android:layout_height="@dimen/x130"
         android:background="@color/primary_list"
         android:orientation="horizontal">
 
-        <com.faceunity.nama.checkbox.CheckBoxCompat
+        <CheckBox
             android:id="@+id/beauty_radio_skin_beauty"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableTop="@drawable/st_beauty_skin"
             android:background="@color/transparent"
             android:button="@null"
             android:gravity="center"
             android:text="@string/beauty_radio_skin_beauty"
-            android:textColor="@color/bottom_radio_color"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size_26"/>
 
-        <com.faceunity.nama.checkbox.CheckBoxCompat
+        <CheckBox
             android:id="@+id/beauty_radio_face_shape"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableTop="@drawable/st_beauty_shape"
             android:background="@color/transparent"
             android:button="@null"
             android:gravity="center"
             android:text="@string/beauty_radio_face_shape"
-            android:textColor="@color/bottom_radio_color"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size_26"/>
 
         <com.faceunity.nama.checkbox.CheckBoxCompat
@@ -136,11 +138,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableTop="@drawable/st_filter"
             android:background="@color/transparent"
             android:button="@null"
             android:gravity="center"
             android:text="@string/beauty_radio_filter"
-            android:textColor="@color/bottom_radio_color"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size_26" />
     </com.faceunity.nama.checkbox.CheckGroup>
 </LinearLayout>

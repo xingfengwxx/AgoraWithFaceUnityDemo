@@ -56,6 +56,7 @@ public class FaceUnityView extends LinearLayout {
         LayoutInflater.from(mContext).inflate(R.layout.layout_faceunity, this);
         initView();
         bindBottomView();
+        showBeauty();
     }
 
     /**
@@ -134,5 +135,13 @@ public class FaceUnityView extends LinearLayout {
         lineView.setVisibility((index != -1) ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * 只显示美颜
+     */
+    private void showBeauty() {
+        showFunction(0);
+//        mDataFactory.onFunctionSelected(0);
+        mCheckGroupView.setVisibility(View.GONE);
+    }
 
 }

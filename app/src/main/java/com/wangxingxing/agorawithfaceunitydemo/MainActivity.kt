@@ -68,6 +68,14 @@ class MainActivity : RtcBasedActivity(), RtcEngineEventHandler, SensorEventListe
             preprocessor!!.skipFrame()
             rtcEngine().switchCamera()
         }
+
+        binding.localVideoView.setOnClickListener {
+            if (binding.fuView.isShown) {
+                binding.fuView.visibility = View.GONE
+            } else {
+                binding.fuView.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun initRoom() {

@@ -23,4 +23,10 @@
         <item name="colorSwitchThumbNormal">#F1F1F1</item>
         <item name="android:colorForeground">#FF2F2F2F</item>
     </style>
+
+    <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/st_beauty_skin</item>
+    </style>
+
+
 </resources>
